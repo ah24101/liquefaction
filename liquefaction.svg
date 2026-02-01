@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 824.43 467.29">
+  <g id="annotation_base">
+    <text transform="translate(366.91 25.32)" fill="#231815" font-family="KozGoPr6N-Regular-90ms-RKSJ-H, &apos;Kozuka Gothic Pr6N&apos;" font-size="12"><tspan x="0" y="0">建物</tspan></text>
+    <text transform="translate(739.88 215.12)" fill="#231815" font-family="KozGoPr6N-Regular-90ms-RKSJ-H, &apos;Kozuka Gothic Pr6N&apos;" font-size="12"><tspan x="0" y="0">地表</tspan></text>
+    <text transform="translate(767.09 273.4)" fill="#231815" font-family="KozGoPr6N-Regular-90ms-RKSJ-H, &apos;Kozuka Gothic Pr6N&apos;" font-size="9.35"><tspan x="0" y="0">地下水位</tspan></text>
+    <text transform="translate(757.36 463.22)" fill="#231815" font-family="KozGoPr6N-Regular-90ms-RKSJ-H, &apos;Kozuka Gothic Pr6N&apos;" font-size="12"><tspan x="0" y="0">支持層</tspan></text>
+    <text transform="translate(773.54 380.05) scale(.81 1)" fill="#231815" font-family="KozGoPr6N-Regular-90ms-RKSJ-H, &apos;Kozuka Gothic Pr6N&apos;" font-size="11.49"><tspan x="0" y="0">粘土層</tspan></text>
+    <text/>
+    <text transform="translate(770.58 238.2)" fill="#231815" font-family="KozGoPr6N-Regular-90ms-RKSJ-H, &apos;Kozuka Gothic Pr6N&apos;" font-size="12"><tspan x="0" y="0">砂層</tspan></text>
+  </g>
+  <g id="base_layer">
+    <rect x="1.42" y="390.91" width="766.43" height="58.74" fill="#392a11" stroke="#231815" stroke-miterlimit="10" stroke-width="2.83"/>
+  </g>
+  <g id="soil_cray">
+    <rect x="1.42" y="339.16" width="766.43" height="51.75" fill="#8f7640" stroke="#231815" stroke-miterlimit="10" stroke-width="1.13"/>
+  </g>
+  <g id="soil_sand">
+    <rect x="1.42" y="217.56" width="766.43" height="121.6" fill="#bdb17a" stroke="#231815" stroke-miterlimit="10" stroke-width="1.13"/>
+  </g>
+  <g id="groundwater">
+    <rect x="1.42" y="274.91" width="766.43" height="12.59" fill="#97c0db" stroke="#231815" stroke-miterlimit="10" stroke-width="1.13"/>
+    <polygon points="663.66 252.2 695.12 252.2 679.39 272.05 663.66 252.2" fill="#97c0db" stroke="#231815" stroke-miterlimit="10" stroke-width="1.13"/>
+  </g>
+  <g id="ground_surface">
+    <line x1="1.42" y1="217.56" x2="767.85" y2="217.56" fill="#fff" stroke="#231815" stroke-miterlimit="10" stroke-width="2.83"/>
+  </g>
+  <g id="buildings">
+    <rect x="302.48" y="32.95" width="155.94" height="184.62" fill="#fff" stroke="#231815" stroke-miterlimit="10" stroke-width="2.83"/>
+  </g>
+</svg>
