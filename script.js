@@ -1,4 +1,3 @@
-// 読み込み
 const svgObject = document.getElementById("svgObject");
 
 // init（説明書）の定義
