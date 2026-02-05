@@ -1,18 +1,19 @@
 // SVG要素の取得
 const svgObject = document.getElementById("svgObject");
 
-// シミュレーション実行関数（HTMLのボタンから呼ばれる）
+// シミュレーション実行関数（HTMLのボタンから直接呼ばれるようにします）
 function simulate() {
+  console.log("ボタンが押された");
+  
   const svg = svgObject.contentDocument;
   if (!svg) {
-    alert("SVGが読み込まれていません。ページを再読み込みしてください。");
+    alert("SVGがまだ読み込まれていません。少し待ってから再度押してください。");
     return;
   }
 
-  const buildings = svg.getElementById("buildings");
   const resultText = document.getElementById("resultText");
 
-  // スコア計算（HTMLの新しいIDに合わせました）
+  // --- スコア計算（HTMLのチェックボックスIDに完全に合わせました） ---
   let score = 0;
   if (document.getElementById("soil_sand").checked) score += 2;
   if (document.getElementById("grain_uniform").checked) score += 1;
@@ -24,25 +25,28 @@ function simulate() {
 
   // 判定に応じたアクション
   if (score >= 6) {
-    resultText.innerHTML = `【判定：${score}点】激しい液状化が発生！<br>地表には泥水が噴き出します。`;
+    resultText.innerHTML = `【判定：${score}点】激しい液状化が発生！<br>建物が沈下し、泥水が噴き出します。`;
     resultText.style.color = "red";
-    startAnimation(svg, 20, true); // 泥水あり
+    startAnimation(svg, 20, true); // 沈む＋泥水
   } else if (score >= 3) {
     resultText.innerHTML = `【判定：${score}点】液状化の可能性あり。<br>少し地盤が弱くなり、建物が傾きます。`;
     resultText.style.color = "orange";
-    startAnimation(svg, 8, false); // 泥水なし
+    startAnimation(svg, 8, false); // 少し沈むだけ
   } else {
     resultText.innerHTML = `【判定：${score}点】地盤は安定しています。`;
     resultText.style.color = "blue";
-    justShake(buildings); 
+    const buildings = svg.getElementById("buildings");
+    justShake(buildings); // 揺れるだけ
   }
 }
 
-// --- 以下、アニメーション関連（昨日作成したもの） ---
-
+// --- アニメーション関数（揺れ→沈下＋泥水） ---
 function startAnimation(svg, depth, showMud) {
   const building = svg.getElementById("buildings");
-  if (!building) return;
+  if (!building) {
+    console.error("SVGの中に 'buildings' というIDのパーツが見つかりません。");
+    return;
+  }
 
   building.style.transformBox = "fill-box";
   building.style.transformOrigin = "center";
@@ -52,6 +56,7 @@ function startAnimation(svg, depth, showMud) {
     const xMove = (shakeCount % 2 === 0) ? 3 : -3;
     building.style.transform = `translateX(${xMove}px)`;
 
+    // 揺れの途中で泥水(path)が出る演出
     if (showMud && shakeCount === 10) {
       showMudWater(svg);
     }
@@ -73,6 +78,7 @@ function startAnimation(svg, depth, showMud) {
   }, 60);
 }
 
+// 泥水の描画（pathを使用）
 function showMudWater(svg) {
   const svgRoot = svg.documentElement; 
   const mudPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -93,6 +99,7 @@ function showMudWater(svg) {
   }, 100);
 }
 
+// 揺れるだけ
 function justShake(element) {
   if (!element) return;
   let c = 0;
