@@ -1,48 +1,86 @@
-/* 全体のコンテナ */
-#controls {
-    display: flex;
-    flex-direction: row;   /* 絶対に横並び */
-    flex-wrap: nowrap;     /* ★絶対に改行させない！ */
-    justify-content: center;
-    align-items: flex-start;
-    gap: 20px;
+body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background: #f5f5f5;
+    margin: 0;
     padding: 20px;
-    width: 100%;       /* 画面からはみ出さない */
-    overflow: hidden;      /* ★はみ出したら隠す */
-    box-sizing: border-box;
-}
-
-/* 左側：質問エリア（幅を固定気味にする） */
-.left-panel {
-    flex: 0 0 350px;       /* 「伸びない・縮まない・幅350px固定」の設定 */
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: left;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-/* 右側：イラストエリア（SVGを閉じ込める） */
-.right-panel {
-    flex: 1;               /* 残りのスペースを埋める */
-    min-width: 0;          /* 中身（SVG）が大きくても無視して縮ませる魔法の一行 */
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     text-align: center;
 }
 
-/* SVG本体のサイズを強制指定 */
-#svgObject {
-    width: 100%;           /* 親の right-panel の幅に合わせる */
-    max-width: 500px;      /* これが重要！大きくなりすぎないように制限 */
-    height: auto;          /* 比率を保つ */
+/* レイアウト：上下に並べるが、幅を制限して見やすくする */
+.main-layout {
+    max-width: 800px;
+    margin: 0 auto;
 }
 
-/* 質問のラベル設定 */
-label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 14px;
+#controls {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    text-align: left; /* 質問は左揃え */
+}
+
+.box {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+p { font-weight: bold; margin: 5px 0; }
+label { display: block; margin: 5px 0; cursor: pointer; }
+
+button {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* イラスト部分の巨大化を止める！ */
+.visual-panel {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+.svg-wrapper {
+    width: 100%;
+    /* ここで最大高さを制限することで、スクロールを不要にします */
+    max-height: 450px; 
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+#svgObject {
+    width: 100%;
+    max-width: 750px; /* ここでお好みの大きさに調整できます */
+    height: auto;
+}
+
+#resultText {
+    margin-top: 15px;
+    font-size: 1.1em;
+    min-height: 1.5em;
+}
+.canva-btn {
+    display: inline-block;
+    padding: 20px 40px;
+    background: linear-gradient(45deg, #00C4CC, #7D2AE8); /* Canvaカラー */
+    color: white !important;
+    text-decoration: none;
+    font-size: 22px;
+    font-weight: bold;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+}
+
+.canva-btn:hover {
+    transform: scale(1.05);
 }

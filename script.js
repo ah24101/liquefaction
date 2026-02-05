@@ -3,6 +3,10 @@ const svgObject = document.getElementById("svgObject");
 
 function init() {
   console.log("init 実行");
+  
+  // 実行ボタンを押すたびに「解説へ」のボタンを一旦隠す
+  document.getElementById("next-step").style.display = "none";
+ 
 
   const svg = svgObject.contentDocument;
   if (!svg) {
@@ -105,11 +109,12 @@ function sink(building, depth) {
   let y = 0;
   const interval = setInterval(() => {
     y += 0.3;
-    building.style.transform =
-      `translateY(${y}px) rotate(${depth / 6}deg)`;
+    building.style.transform = `translateY(${y}px) rotate(${depth / 6}deg)`;
 
     if (y >= depth) {
       clearInterval(interval);
+      // --- ここにボタンを表示する命令を追加 ---
+      document.getElementById("next-step").style.display = "block";
     }
   }, 30);
 }
@@ -152,12 +157,13 @@ function justShake(element) {
 
   let c = 0;
   const int = setInterval(() => {
-    element.style.transform =
-      `translateX(${c % 2 === 0 ? 2 : -2}px)`;
+    element.style.transform = `translateX(${c % 2 === 0 ? 2 : -2}px)`;
     c++;
     if (c > 20) {
       clearInterval(int);
       element.style.transform = "none";
+      // --- ここにボタンを表示する命令を追加 ---
+      document.getElementById("next-step").style.display = "block";
     }
   }, 200);
 }
