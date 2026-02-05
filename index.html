@@ -3,18 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>液状化シミュレーション</title>
-    <style>
-        body{
-        margin: 0;
-        background: #f5f5f5;
-        text-align:center;
-        }
-        svg{
-            width:100%;
-            max-width:1000px;  
-            height:auto;          
-        }
-    </style>
+    
 </head>
 
 
@@ -22,39 +11,43 @@
 
 <h2>液状化シミュレーション</h2>
 
-<div id = "controls">
-    <h3>地盤条件を選んでみよう！</h3>
-    <p>①　土の種類</p>
-    <label><input type="radio" name="soil_type" value="2" id="q1_yes">砂が多い地盤(砂質土)</label>   
-    <label><input type="radio" name="soil_type" value="0" checked>粘土が多い地盤(粘性土)</label>
+<div id = "controls" style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: center;"></div>
 
-    <p>②　粒の大きさ</p>
-    <label><input type="radio" name="soil_size" value="1" id="q2_yes">同じくらい大きさの粒が多い(均一)</label>   
-    <label><input type="radio" name="soil_size" value="0" checked>大小バラバラの大きさの粒がそろっている</label>
+    <div class="left-panel">
+        <h3>地盤条件を選んでみよう！</h3>
+        <p>①　土の種類</p>
+        <label><input type="radio" name="soil_type" value="2" id="q1_yes">砂が多い地盤(砂質土)</label>   
+        <label><input type="radio" name="soil_type" value="0" checked>粘土が多い地盤(粘性土)</label>
 
-    <p>③　土の締まり具合</p>
-    <label><input type="radio" name="soil_piled" value="2" id="q3_yes">ふんわり積もっている(緩い)</label>   
-    <label><input type="radio" name="soil_piled" value="0" checked>しっかり締まっている(固い)</label>
+        <p>②　粒の大きさ</p>
+        <label><input type="radio" name="soil_size" value="1" id="q2_yes">同じくらい大きさの粒が多い(均一)</label>   
+        <label><input type="radio" name="soil_size" value="0" checked>大小バラバラの大きさの粒がそろっている</label>
 
-    <p>④　地下水の高さ</p>
-    <label><input type="radio" name="water_level" value="2" id="q4_yes">地表近くまで水がある</label>   
-    <label><input type="radio" name="water_level" value="0" checked>深いところにある</label>
+        <p>③　土の締まり具合</p>
+        <label><input type="radio" name="soil_piled" value="2" id="q3_yes">ふんわり積もっている(緩い)</label>   
+        <label><input type="radio" name="soil_piled" value="0" checked>しっかり締まっている(固い)</label>
 
-    <p>⑤　土地の成り立ち</p>
-    <label><input type="radio" name="geo_type" value="1" id="q5_yes">埋立地・川や海の近く</label>   
-    <label><input type="radio" name="geo_type" value="0" checked>古い台地・山地</label>
+        <p>④　地下水の高さ</p>
+        <label><input type="radio" name="water_level" value="2" id="q4_yes">地表近くまで水がある</label>   
+        <label><input type="radio" name="water_level" value="0" checked>深いところにある</label>
+
+        <p>⑤　土地の成り立ち</p>
+        <label><input type="radio" name="geo_type" value="1" id="q5_yes">埋立地・川や海の近く</label>   
+        <label><input type="radio" name="geo_type" value="0" checked>古い台地・山地</label>
 
     <br><br>
 
-    <button type="button" id="runB">地震発生</button>
-    <div id="resultText" style="margin-top:20px; font-weight:bold; min-height: 1.5em;"></div>
-</div>
-<object
-    id="svgObject"
-    type="image/svg+xml"
-    data="liquefaction.svg">
+        <button type="button" id="runB">地震発生</button>
+        <div id="resultText" style="margin-top:20px; font-weight:bold; min-height: 1.5em;"></div>
+    </div>
 
-</object>
+    <div class="right-panel">
+        <h3>シミュレーション図</h3>
+        <object id="svgObject" type="image/svg+xml" data="liquefaction.svg" width="450" style="border: 1px solid #ccc;"></object>
+    </div>
+
+</div>
+
 <script src="script.js"></script>
   
 </body>
