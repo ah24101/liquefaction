@@ -1,7 +1,7 @@
 // SVG要素の取得
 const svgObject = document.getElementById("svgObject");
 
-// シミュレーション実行関数（HTMLのボタンから直接呼ばれるようにします）
+// シミュレーション実行関数
 function simulate() {
   console.log("ボタンが押された");
   
@@ -13,25 +13,39 @@ function simulate() {
 
   const resultText = document.getElementById("resultText");
 
-  // --- スコア計算（HTMLのチェックボックスIDに完全に合わせました） ---
+  // --- 1. スコア計算 (HTMLのIDに合わせました) ---
   let score = 0;
-  if (document.getElementById("soil_sand").checked) score += 2;
-  if (document.getElementById("grain_uniform").checked) score += 1;
-  if (document.getElementById("ground_loose").checked) score += 2;
-  if (document.getElementById("water_high").checked) score += 2;
-  if (document.getElementById("place_river").checked) score += 1;
+  
+  // チェックが入っていたら加点
+  if (document.getElementById("q1_yes").checked) score += 2;
+  if (document.getElementById("q2_yes").checked) score += 1;
+  if (document.getElementById("q3_yes").checked) score += 2;
+  if (document.getElementById("q4_yes").checked) score += 2;
+  if (document.getElementById("q5_yes").checked) score += 1;
 
   console.log("計算スコア:", score);
 
-  // 判定に応じたアクション
+  // --- 2. 地下水位の連動 (追加した部分) ---
+  const groundwater = svg.getElementById("groundwater");
+  if (groundwater) {
+    const waterRect = groundwater.querySelector("rect");
+    if (waterRect) {
+      // 「地下水が高い」にチェックがあれば高い位置(224.91)、なければ低い位置(274.91)
+      const isHigh = document.getElementById("q4_yes").checked;
+      waterRect.setAttribute("y", isHigh ? "224.91" : "274.91");
+      console.log("地下水位を更新:", isHigh ? "高" : "低");
+    }
+  }
+
+  // --- 3. 判定に応じたアクション ---
   if (score >= 6) {
-    resultText.innerHTML = `【判定：${score}点】激しい液状化が発生！<br>建物が沈下し、泥水が噴き出します。`;
+    resultText.innerHTML = `【判定：${score}点】激しい液状化が発生！<br>地表には泥水が噴き出します。`;
     resultText.style.color = "red";
     startAnimation(svg, 20, true); // 沈む＋泥水
   } else if (score >= 3) {
     resultText.innerHTML = `【判定：${score}点】液状化の可能性あり。<br>少し地盤が弱くなり、建物が傾きます。`;
     resultText.style.color = "orange";
-    startAnimation(svg, 8, false); // 少し沈むだけ
+    startAnimation(svg, 8, false); // 少し沈む
   } else {
     resultText.innerHTML = `【判定：${score}点】地盤は安定しています。`;
     resultText.style.color = "blue";
@@ -40,23 +54,26 @@ function simulate() {
   }
 }
 
-// --- アニメーション関数（揺れ→沈下＋泥水） ---
+// --- 以下、アニメーション関連 ---
+
 function startAnimation(svg, depth, showMud) {
   const building = svg.getElementById("buildings");
   if (!building) {
-    console.error("SVGの中に 'buildings' というIDのパーツが見つかりません。");
+    console.error("SVG内に 'buildings' というIDが見つかりません。");
     return;
   }
 
-  building.style.transformBox = "fill-box";
-  building.style.transformOrigin = "center";
+  // SVGでは setAttribute を使う
+  building.setAttribute("transform-origin", "center");
+  building.setAttribute("transform-box", "fill-box");
+
 
   let shakeCount = 0;
-  const shakeInterval = setInterval(() => {
-    const xMove = (shakeCount % 2 === 0) ? 3 : -3;
-    building.style.transform = `translateX(${xMove}px)`;
 
-    // 揺れの途中で泥水(path)が出る演出
+  const shakeInterval = setInterval(() => {
+    const xMove = shakeCount % 2 === 0 ? 3 : -3;
+    building.setAttribute("transform", `translate(${xMove}, 0)`);
+
     if (showMud && shakeCount === 10) {
       showMudWater(svg);
     }
@@ -65,6 +82,7 @@ function startAnimation(svg, depth, showMud) {
 
     if (shakeCount > 25) {
       clearInterval(shakeInterval);
+
       let move = 0;
       const sinkInterval = setInterval(() => {
         if (move >= depth) {
@@ -72,13 +90,15 @@ function startAnimation(svg, depth, showMud) {
           return;
         }
         move += 0.2;
-        building.style.transform = `translateY(${move}px) rotate(${depth / 6}deg)`;
+        building.setAttribute(
+          "transform",
+          `translate(0 ${move}) rotate(${depth / 6})`
+        );
       }, 30);
     }
-  }, 60);
+  }, 100);
 }
 
-// 泥水の描画（pathを使用）
 function showMudWater(svg) {
   const svgRoot = svg.documentElement; 
   const mudPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -88,26 +108,27 @@ function showMudWater(svg) {
 
   mudPath.setAttribute("d", initialPath);
   mudPath.setAttribute("fill", "#8f7640"); 
-  mudPath.style.filter = "blur(3px)";
-  mudPath.style.transition = "all 2.5s ease-out";
-  
+  mudPath.setAttribute("opacity", "0.8");
+  mudPath.setAttribute("filter", "url(#blur)");
+
   svgRoot.appendChild(mudPath); 
   
   setTimeout(() => {
     mudPath.setAttribute("d", expandedPath);
-    mudPath.style.opacity = "0.8";
   }, 100);
 }
 
-// 揺れるだけ
 function justShake(element) {
   if (!element) return;
+
   let c = 0;
   const int = setInterval(() => {
-    element.style.transform = `translateX(${c % 2 === 0 ? 2 : -2}px)`;
+    const x = c % 2 === 0 ? 2 : -2;
+    element.setAttribute("transform", `translate(${x}, 0)`);
+
     if (c++ > 20) {
       clearInterval(int);
-      element.style.transform = "none";
+      element.setAttribute("transform", "translate(0, 0)");
     }
   }, 50);
 }
