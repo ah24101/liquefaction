@@ -57,9 +57,10 @@ button {
     justify-content: center;
 }
 
-#svgObject {
+/* style.css の該当箇所を修正 */
+#mainSvg {  /* #svgObject から変更 */
     width: 100%;
-    max-width: 750px; /* ここでお好みの大きさに調整できます */
+    max-width: 750px; 
     height: auto;
 }
 
