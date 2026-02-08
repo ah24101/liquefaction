@@ -12,26 +12,31 @@
     <div class="main-layout">
         <div id="controls">
             <h3>地盤条件を選んでみよう！</h3>
+            
             <div class="box">
                 <p>① 土の種類</p>
                 <label><input type="radio" name="soil_type" value="2" id="q1_yes">砂が多い地盤(砂質土)</label>   
                 <label><input type="radio" name="soil_type" value="0" checked>粘土が多い地盤(粘性土)</label>
             </div>
+
             <div class="box">
                 <p>② 粒の大きさ</p>
                 <label><input type="radio" name="soil_size" value="1" id="q2_yes">均一な粒</label>   
                 <label><input type="radio" name="soil_size" value="0" checked>バラバラな粒</label>
             </div>
+
             <div class="box">
                 <p>③ 土の締まり具合</p>
                 <label><input type="radio" name="soil_piled" value="2" id="q3_yes">緩い</label>   
                 <label><input type="radio" name="soil_piled" value="0" checked>固い</label>
             </div>
+
             <div class="box">
                 <p>④ 地下水の高さ</p>
                 <label><input type="radio" name="water_level" value="2" id="q4_yes">地表近くにある</label>   
                 <label><input type="radio" name="water_level" value="0" checked>深い</label>
             </div>
+
             <div class="box">
                 <p>⑤ 土地の成り立ち</p>
                 <label><input type="radio" name="geo_type" value="1" id="q5_yes">埋立地・水辺</label>   
@@ -50,33 +55,50 @@
         <div class="visual-panel">
             <h3>シミュレーション図</h3>
             <div class="svg-wrapper">
-                <svg id="mainSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 824.43 467.29" style="width: 100%; height: auto;">
+                <svg id="mainSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.89 595.28">
+                    <defs>
+                        <style>
+                            .st0 { font-size: 9.35px; }
+                            .st0, .st1, .st2, .st3 { fill: #231815; font-family: 'Kozuka Gothic Pr6N'; }
+                            .st4 { fill: #bdb17a; }
+                            .st4, .st5, .st6, .st7 { stroke: #231815; stroke-miterlimit: 10; }
+                            .st4, .st5, .st7 { stroke-width: 1.13px; }
+                            .st5 { fill: #97c0db; }
+                            .st6 { fill: #fff; stroke-width: 2.83px; }
+                            .st1 { font-size: 17.01px; }
+                            .st7 { fill: #8f7640; }
+                            .st2 { font-size: 17.1px; }
+                            .st3 { font-size: 12px; }
+                            .st8 { display: none; }
+                        </style>
+                    </defs>
+
                     <g id="annotation_base">
-                      <text transform="translate(366.91 25.32)" fill="#231815" font-size="12">建物</text>
-                      <text transform="translate(739.88 215.12)" fill="#231815" font-size="12">地表</text>
-                      <text transform="translate(767.09 273.4)" fill="#231815" font-size="9.35">地下水位</text>
-                      <text transform="translate(757.36 463.22)" fill="#231815" font-size="12">支持層</text>
-                      <text transform="translate(773.54 380.05) scale(.81 1)" fill="#231815" font-size="11.49">粘土層</text>
-                      <text transform="translate(770.58 238.2)" fill="#231815" font-size="12">砂層</text>
+                        <text class="st3" transform="translate(780.37 295.2)">地表</text>
+                        <text class="st0" transform="translate(807.58 353.48)">地下水位</text>
                     </g>
-                    <g id="base_layer">
-                      <rect x="1.42" y="390.91" width="766.43" height="58.74" fill="#392a11" stroke="#231815" stroke-width="2.83"/>
+
+                    <g id="soil_cray" class="st8">
+                        <rect class="st7" x="41.91" y="298.96" width="766.43" height="172.03"/>
+                        <text class="st2" transform="translate(766.69 491.62) scale(.81 1)">粘土層</text>
                     </g>
-                    <g id="soil_cray">
-                      <rect x="1.42" y="339.16" width="766.43" height="51.75" fill="#8f7640" stroke="#231815" stroke-width="1.13"/>
-                    </g>
+
                     <g id="soil_sand">
-                      <rect x="1.42" y="217.56" width="766.43" height="121.6" fill="#bdb17a" stroke="#231815" stroke-width="1.13"/>
+                        <rect class="st4" x="41.91" y="297.64" width="766.43" height="173.35"/>
+                        <text class="st1" transform="translate(767.01 492.16)">砂層</text>
                     </g>
+
                     <g id="groundwater">
-                      <rect x="1.42" y="274.91" width="766.43" height="12.59" fill="#97c0db" stroke="#231815" stroke-width="1.13"/>
-                      <polygon points="663.66 252.2 695.12 252.2 679.39 272.05 663.66 252.2" fill="#97c0db" stroke="#231815" stroke-width="1.13"/>
+                        <rect class="st5" x="41.91" y="354.99" width="766.43" height="12.59"/>
+                        <polygon class="st5" points="704.15 332.28 735.62 332.28 719.88 352.12 704.15 332.28"/>
                     </g>
+
                     <g id="ground_surface">
-                      <line x1="1.42" y1="217.56" x2="767.85" y2="217.56" fill="#fff" stroke="#231815" stroke-width="2.83"/>
+                        <line class="st6" x1="41.91" y1="297.64" x2="808.34" y2="297.64"/>
                     </g>
+
                     <g id="buildings">
-                      <rect x="302.48" y="32.95" width="155.94" height="184.62" fill="#fff" stroke="#231815" stroke-width="2.83"/>
+                        <image id="buil" width="179" height="260" transform="translate(224.62 -98.43) scale(2.24 1.58)" xlink:href="data:image/png;base64,..."/>
                     </g>
                 </svg>
             </div>
