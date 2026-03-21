@@ -32,9 +32,9 @@
             </div>
 
             <div class="box">
-                <p>④ 地下水の高さ</p>
-                <label><input type="radio" name="water_level" value="2" id="q4_yes">地表近くにある</label>   
-                <label><input type="radio" name="water_level" value="0" checked>深い</label>
+                <p>④ 地面の下で水に浸かっている範囲</p>
+                <label><input type="radio" name="water_level" value="2" id="q4_yes">地表近くまで来ている</label>   
+                <label><input type="radio" name="water_level" value="0" checked>深いところにある</label>
             </div>
 
             <div class="box">
@@ -55,52 +55,62 @@
         <div class="visual-panel">
             <h3>シミュレーション図</h3>
             <div class="svg-wrapper">
-                <svg id="mainSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 841.89 595.28">
+                <svg id="mainSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 200 841.89 350">
                     <defs>
                         <style>
-                            .st0 { font-size: 9.35px; }
-                            .st0, .st1, .st2, .st3 { fill: #231815; font-family: 'Kozuka Gothic Pr6N'; }
-                            .st4 { fill: #bdb17a; }
-                            .st4, .st5, .st6, .st7 { stroke: #231815; stroke-miterlimit: 10; }
-                            .st4, .st5, .st7 { stroke-width: 1.13px; }
-                            .st5 { fill: #97c0db; }
-                            .st6 { fill: #fff; stroke-width: 2.83px; }
-                            .st1 { font-size: 17.01px; }
-                            .st7 { fill: #8f7640; }
-                            .st2 { font-size: 17.1px; }
-                            .st3 { font-size: 12px; }
-                            .st8 { display: none; }
+                            .st0 { fill: #bdb17a; } /* 砂層 */
+                            .st1 { fill: #97c0db; opacity: 0.7; } /* 水 */
+                            .st2 { fill: #fff; stroke-width: 2.83px; } /* 地表線 */
+                            .st3 { fill: #8f7640; } /* 粘土層 */
+                            .st0, .st1, .st2, .st3 { stroke: #231815; stroke-miterlimit: 10; }
+                            .st0, .st1, .st3 { stroke-width: 1.13px; }
+                            .st4 { font-size: 14px; font-weight: bold; }
+                            .st4, .st5, .st6, .st7 { fill: #231815; font-family: 'Kozuka Gothic Pr6N'; }
+                            .st5 { font-size: 17.01px; }
+                            .st6 { font-size: 17.1px; }
+                            .st7 { font-size: 12px; }
+                            
+                            /* アニメーション用：変形の基準点を調整 */
+                            #ground-all, #buildings, #soil_liquefaction {
+                                transform-box: fill-box;
+                                transform-origin: center bottom;
+                                transition: transform 0.5s ease;
+                            }
                         </style>
                     </defs>
 
-                    <g id="annotation_base">
-                        <text class="st3" transform="translate(780.37 295.2)">地表</text>
-                        <text class="st0" transform="translate(807.58 353.48)">地下水位</text>
-                    </g>
+                    <g id="ground-all">
+                        <g id="soil_cray" style="display: none;">
+                            <rect class="st3" x="41.91" y="298.96" width="766.43" height="300"/>
+                            <text class="st6" transform="translate(700 480)">粘土層</text>
+                        </g>
 
-                    <g id="soil_cray" style="display: none;">
-                        <rect class="st7" x="41.91" y="298.96" width="766.43" height="172.03"/>
-                        <text class="st2" transform="translate(766.69 491.62) scale(.81 1)">粘土層</text>
-                    </g>
+                        <g id="soil_sand">
+                            <rect class="st0" x="41.91" y="297.64" width="766.43" height="300"/>
+                            <text class="st5" transform="translate(700 480)">砂層</text>
+                        </g>
 
-                    <g id="soil_sand">
-                        <rect class="st4" x="41.91" y="297.64" width="766.43" height="173.35"/>
-                        <text class="st1" transform="translate(767.01 492.16)">砂層</text>
-                    </g>
+                        <g id="soil_liquefaction" style="display: none;">
+                            <rect fill="#e0c38a" stroke="#231815" stroke-width="1" x="41.91" y="297.64" width="766.43" height="200"/>
+                            <text class="st4" transform="translate(171.82 374.19)">液状化しやすい層</text>
+                        </g>
 
-                    <g id="groundwater">
-                        <rect class="st5" x="41.91" y="354.99" width="766.43" height="12.59"/>
-                        <polygon class="st5" points="704.15 332.28 735.62 332.28 719.88 352.12 704.15 332.28"/>
-                    </g>
+                        <g id="groundwater" style="transition: transform 0.5s ease;">
+                            <rect class="st1" x="41.91" y="354.99" width="766.43" height="300"/>
+                        </g>
 
-                    <g id="ground_surface">
-                        <line class="st6" x1="41.91" y1="297.64" x2="808.34" y2="297.64"/>
+                        <g id="annotation_base">
+                            <text class="st7" transform="translate(780 290)">地表</text>
+                        </g>
+
+                        <g id="ground_surface">
+                            <line class="st2" x1="41.91" y1="297.64" x2="808.34" y2="297.64"/>
+                        </g>
                     </g>
 
                     <g id="buildings">
-                        <g id="buildings">
-                            <image id="buil" width="100" height="150" x="350" y="150" href="building.png" />
-                        </g>
+                        <image id="buil" width="800" height="250" x="20" y="50" href="building.png" />
+                    </g>
                 </svg>
             </div>
         </div>
