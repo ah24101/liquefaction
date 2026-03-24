@@ -85,3 +85,9 @@ button {
 .canva-btn:hover {
     transform: scale(1.05);
 }
+
+/* 液状化層の伸縮基準点を「上（地表）」に固定 */
+#soil_liquefaction {
+    transform-box: fill-box;
+    transform-origin: top !important; /* 常に上端を起点に伸びるようにする */
+}
