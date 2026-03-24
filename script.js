@@ -9,22 +9,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const soilSand = document.getElementById("soil_sand");
     const soilCray = document.getElementById("soil_cray");
-    const soilLiq = document.getElementById("soil_liquefaction"); // 液状化層パーツ
-    const q1Yes = document.getElementById("q1_yes"); // 砂質土ラジオボタン
-    const waterHigh = document.getElementById("q4_yes"); // 地下水高いラジオボタン
+    const soilLiq = document.getElementById("soil_liquefaction"); 
+    const q1Yes = document.getElementById("q1_yes"); 
+    const waterHigh = document.getElementById("q4_yes"); 
+
+    // 重要：基準点を「地表（上端）」に固定する
+    // これにより scaleY をかけた時に「下に向かって」伸びるようになります
+    if (soilLiq) {
+        soilLiq.style.transformOrigin = "center top"; 
+        soilLiq.style.transformBox = "fill-box";
+    }
 
     // ① 土層と液状化層の表示切り替え
     const updateSoilDisplay = () => {
         if (q1Yes.checked) {
             soilSand.style.setProperty("display", "block", "important");
-            soilLiq.style.setProperty("display", "block", "important"); // 砂なら液状化層を出す
+            soilLiq.style.setProperty("display", "block", "important");
             soilCray.style.setProperty("display", "none", "important");
         } else {
             soilSand.style.setProperty("display", "none", "important");
-            soilLiq.style.setProperty("display", "none", "important"); // 粘土なら隠す
+            soilLiq.style.setProperty("display", "none", "important");
             soilCray.style.setProperty("display", "block", "important");
         }
-        updateWaterEffect(); // 水位の状態も再計算
+        updateWaterEffect(); 
     };
 
     // ② 地下水と液状化層の伸縮（質問④連動）
@@ -33,11 +40,12 @@ document.addEventListener("DOMContentLoaded", () => {
         soilLiq.style.transition = "transform 1s ease";
         
         if (waterHigh.checked) {
-            // 水位が高いとき：水を上げ、液状化層を縦に2倍に伸ばす
+            // 水位が高いとき
             groundwater.style.transform = "translateY(-50px)";
-            soilLiq.style.transform = "scaleY(2.0)"; 
+            // 基準点が top なので、上にはみ出さず下へ伸びる（倍率は適宜調整してください）
+            soilLiq.style.transform = "scaleY(3.0)"; 
         } else {
-            // 水位が低いとき：元の位置、液状化層は標準サイズ
+            // 水位が低いとき
             groundwater.style.transform = "translateY(0)";
             soilLiq.style.transform = "scaleY(1.0)";
         }
@@ -67,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (score >= 6) {
             resultText.innerHTML = `判定：${score}点【激しい液状化】<br>泥水が噴き出し、建物が沈みます。`;
             resultText.style.color = "red";
-            startAnimation(60, 2); // ズームに合わせて沈下量を深めに(60)
+            startAnimation(60, 2); 
         } else if (score >= 3) {
             resultText.innerHTML = `判定：${score}点【液状化の可能性あり】<br>地面がぬかるみ、建物が傾きます。`;
             resultText.style.color = "orange";
@@ -103,7 +111,6 @@ document.addEventListener("DOMContentLoaded", () => {
         let y = 0;
         const interval = setInterval(() => {
             y += 0.5;
-            // 建物が横に長いため、回転角度をマイルド(depth/12)に調整
             buildings.style.transform = `translateY(${y}px) rotate(${depth/12}deg)`;
             
             if (y >= depth) {
@@ -113,36 +120,30 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 40);
     }
 
-    // 泥水要素の生成
-function showMudWater(level) {
-    const mud = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-    mud.setAttribute("class", "mud-flow");
-    mud.setAttribute("x", "41.91"); // 地盤の横幅に合わせる
-    
-    
-    // 巨大建物に合わせて、以前よりさらに大きく(100)設定
-    const mudHeight = (level === 2) ? "75" : "50"; // 激しい：100、可能性あり：50
-    mud.setAttribute("height", mudHeight);
-    
-   
-    // 地表(297)から、高さ分だけ「上」にずらすことで、地表より上に溜まるようにする
-    const groundLineY = 297; 
-    const startY = groundLineY - mudHeight; 
-    mud.setAttribute("y", startY.toString()); // 例：激しい時は 297 - 100 = 197 からスタート
+    function showMudWater(level) {
+        const mud = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        mud.setAttribute("class", "mud-flow");
+        mud.setAttribute("x", "41.91");
+        
+        const mudHeight = (level === 2) ? "75" : "50"; 
+        mud.setAttribute("height", mudHeight);
+        
+        const groundLineY = 297; 
+        const startY = groundLineY - mudHeight; 
+        mud.setAttribute("y", startY.toString());
 
-    mud.setAttribute("width", "766");
-    mud.setAttribute("fill", "#795548"); // 泥っぽい茶色
-    mud.style.filter = "blur(6px)"; // ドロドロ感を強調
-    mud.style.opacity = "0";
-    mud.style.transition = "opacity 2s ease-in-out";
-    
-    // 重ね順は「一番手前」
-    mainSvg.appendChild(mud); 
-    
-    setTimeout(() => { 
-        mud.style.opacity = "0.85"; 
-    }, 50);
-}
+        mud.setAttribute("width", "766");
+        mud.setAttribute("fill", "#795548"); 
+        mud.style.filter = "blur(6px)"; 
+        mud.style.opacity = "0";
+        mud.style.transition = "opacity 2s ease-in-out";
+        
+        mainSvg.appendChild(mud); 
+        
+        setTimeout(() => { 
+            mud.style.opacity = "0.85"; 
+        }, 50);
+    }
 
     function justShake(el) {
         let c = 0;
@@ -159,6 +160,5 @@ function showMudWater(level) {
         }, 100);
     }
 
-    // 初回実行
     updateSoilDisplay();
 });
